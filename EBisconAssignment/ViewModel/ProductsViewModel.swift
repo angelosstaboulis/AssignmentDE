@@ -20,24 +20,24 @@ class ProductsViewModel{
     init() {
         apishared = APIManager.shared
         do{
-            container = try ModelContainer(for: SwiftDataProduct.self)
+            container = try ModelContainer(for: DataProduct.self)
         }catch{
             debugPrint("something went wrong")
         }
     }
     
-    func insert(product:SwiftDataProduct){
+    func insert(product:DataProduct){
         do{
-            let newItem = SwiftDataProduct(title: product.title, price: product.price, descriptionProduct: product.descriptionProduct, category: product.category, image: product.image, rating:.init(rate: 0.0, count:0))
+            let newItem = DataProduct(title: product.title, price: product.price, descriptionProduct: product.descriptionProduct, category: product.category, image: product.image, rate: product.rate,count: product.count)
             container.mainContext.insert(newItem)
             try container.mainContext.save()
         }catch{
             debugPrint("something went wrong!!!!")
         }
     }
-    func fetchSwiftDataProducts()->Observable<[SwiftDataProduct]>{
+    func fetchSwiftDataProducts()->Observable<[DataProduct]>{
         return Observable.create { observer -> Disposable in
-            let descriptor = FetchDescriptor<SwiftDataProduct>()
+            let descriptor = FetchDescriptor<DataProduct>()
             let products = (try? self.container?.mainContext.fetch(descriptor)) ?? []
             observer.onNext(products)
             return Disposables.create()
@@ -47,8 +47,9 @@ class ProductsViewModel{
         self.apishared.getAPIProducts { productsArray in
             Task{
                 for product in 0..<productsArray.count{
-                    let swiftDataRating = SwiftDataRatingProduct(rate: productsArray[product].rating.rate, count: productsArray[product].rating.count)
-                    let swiftData = SwiftDataProduct(title: productsArray[product].title, price: productsArray[product].price, descriptionProduct: productsArray[product].description, category: productsArray[product].category, image: productsArray[product].image, rating:swiftDataRating)
+                    let rate = productsArray[product].rating.rate
+                    let count = productsArray[product].rating.count
+                    let swiftData = DataProduct(title: productsArray[product].title, price: productsArray[product].price, descriptionProduct: productsArray[product].description, category: productsArray[product].category, image: productsArray[product].image,rate:rate,count:count)
                         self.insert(product: swiftData)
                     
                     

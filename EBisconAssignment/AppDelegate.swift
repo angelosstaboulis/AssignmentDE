@@ -12,14 +12,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            SwiftDataProduct.self,
+            DataProduct.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+            fatalError("Could not create ModelContainer: \(error.localizedDescription)")
         }
     }()
 

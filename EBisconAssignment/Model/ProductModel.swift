@@ -34,34 +34,33 @@ class ProductModel:Decodable{
       case rating = "rating"
     }
 }
-@Model
-class SwiftDataRatingProduct{
-    @Relationship(inverse: \SwiftDataProduct.rating) var rating: SwiftDataRatingProduct?
-    var rate:Double
-    var count:Int
-    init(rate: Double, count: Int) {
-        self.rate = rate
-        self.count = count
-    }
-}
 
 @Model
-class SwiftDataProduct {
+final class DataProduct {
     var title = ""
     var price = 0.0
     var descriptionProduct = ""
     var category = ""
     var image = ""
-    var rating: SwiftDataRatingProduct
-
-    
-    init(title: String = "", price: Double = 0.0, descriptionProduct: String = "", category: String = "", image: String = "", rating: SwiftDataRatingProduct) {
+    var rate:Double
+    var count:Int
+    init(title: String = "", price: Double = 0.0, descriptionProduct: String = "", category: String = "", image: String = "", rate: Double, count: Int) {
         self.title = title
         self.price = price
         self.descriptionProduct = descriptionProduct
         self.category = category
         self.image = image
-        self.rating = rating
+        self.rate = rate
+        self.count = count
     }
     
+//    init(title: String = "", price: Double = 0.0, descriptionProduct: String = "", category: String = "", image: String = "", rating: SwiftDataRatingProduct) {
+//        self.title = title
+//        self.price = price
+//        self.descriptionProduct = descriptionProduct
+//        self.category = category
+//        self.image = image
+//        self.rating = rating
+//    }
+//    
 }

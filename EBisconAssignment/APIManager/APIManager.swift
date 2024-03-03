@@ -24,7 +24,7 @@ class APIManager{
                         onFail(-1000)
                     }
                 case .failure(let error):
-                    //debugPrint("something went wrong!!!!",error.localizedDescription)
+                    debugPrint("something went wrong!!!!",error.localizedDescription)
                     onFail(-1000)
 
                 }

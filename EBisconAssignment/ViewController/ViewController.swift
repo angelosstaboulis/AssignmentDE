@@ -53,7 +53,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
         return false
     }
     let helper = Helper()
-    var productsSwift:[SwiftDataProduct] = []
+    var productsSwift:[DataProduct] = []
 
     func setupCollectionViewConstraints(){
         self.view.addSubview(tableView)
@@ -152,21 +152,21 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
             }else{
                 self.viewModel
                     .fetchSwiftDataProducts()
-                    .bind(to: self.tableView.rx.items(cellIdentifier: "cell", cellType: ProductCell.self)) { (row:Int, product: SwiftDataProduct, cell:ProductCell) in
+                    .bind(to: self.tableView.rx.items(cellIdentifier: "cell", cellType: ProductCell.self)) { (row:Int, product: DataProduct, cell:ProductCell) in
                         cell.mainImage.sd_setImage(with: URL(string:product.image))
                         cell.titleLabel.text = product.title
                         cell.descriptionLabel.text = product.descriptionProduct
-                        cell.textRating.text = String(describing:product.rating.rate)
-                        cell.textRatingParenthesis.text = "(" + String(describing: product.rating.count) + " ratings)"
+                        cell.textRating.text = String(describing:product.rate)
+                        cell.textRatingParenthesis.text = "(" + String(describing: product.count) + " ratings)"
                         cell.priceLabel.text = String(describing:product.price)
                         
                     }.disposed(by: self.disposeBag)
-                self.tableView.rx.modelSelected(SwiftDataProduct.self)
+                self.tableView.rx.modelSelected(DataProduct.self)
                     .observe(on: MainScheduler.instance)
                     .subscribe { item in
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
                         let details:DetailsViewController = storyboard.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
-                        details.offLineProduct = item as SwiftDataProduct
+                        details.offLineProduct = item as DataProduct
                         details.modalPresentationStyle = .fullScreen
                         self.navigationController?.pushViewController(details, animated: true)
                     }.disposed(by: self.disposeBag)

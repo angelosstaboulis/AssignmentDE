@@ -15,11 +15,11 @@ class DetailsViewController: UIViewController,UITableViewDelegate,UITableViewDat
     var viewModel = ProductsViewModel()
     private let disposeBag = DisposeBag()
     var selectedProduct:ProductModel!
-    var offLineProduct:SwiftDataProduct!
+    var offLineProduct:DataProduct!
     var tableView:UITableView!
     let helper = Helper()
     func setupCollectionViewConstraints(){
-        tableView = UITableView(frame:CGRect(x: -200, y: 0, width: UIScreen.main.bounds.width+130, height: UIScreen.main.bounds.height))
+        tableView = UITableView(frame:CGRect(x: -200, y: 0, width: UIScreen.main.bounds.width+190, height: UIScreen.main.bounds.height))
         tableView.register(ProductCell.self,forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
@@ -58,8 +58,8 @@ class DetailsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 cell.mainImage.sd_setImage(with:URL(string:self.offLineProduct.image))
                 cell.titleLabel.text = self.offLineProduct.title
                 cell.descriptionLabel.text = self.offLineProduct.descriptionProduct
-                cell.textRating.text = String(describing:self.offLineProduct.rating.rate)
-                cell.textRatingParenthesis.text = "("+String(describing:self.offLineProduct.rating.count)+" ratings)"
+                cell.textRating.text = String(describing:self.offLineProduct.rate)
+                cell.textRatingParenthesis.text = "("+String(describing:self.offLineProduct.count)+" ratings)"
                 cell.priceLabel.text =  String(describing:self.offLineProduct.price)
             }
         }
