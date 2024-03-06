@@ -32,6 +32,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    fileprivate var tableStackView:UIStackView = {
+        let view = UIStackView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     fileprivate var mainTitle:UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black
@@ -66,20 +71,24 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
         self.view.addSubview(searchField)
         self.view.addSubview(btnSearch)
         self.view.addSubview(stackView)
+        self.view.addSubview(tableStackView)
         searchField.delegate = self
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: -450).isActive = true
+        stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: -350).isActive = true
         
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant:UIScreen.main.bounds.width / 2).isActive = true
-        stackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 300).isActive = true
-        stackView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 40).isActive = true
+        stackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 400).isActive = true
+        stackView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 80).isActive = true
+        tableStackView.translatesAutoresizingMaskIntoConstraints = false
+        tableStackView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 630).isActive = true
+        
+        tableStackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 300).isActive = true
+        tableStackView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 300).isActive = true
         tableView.isUserInteractionEnabled = true
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant:-150).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.topAnchor, constant:450).isActive = true
 
         tableView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 300).isActive = true
-        tableView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 150).isActive = true
+        tableView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 300).isActive = true
         pullRefresh.attributedTitle = NSAttributedString(string: "Pull to refresh")
         pullRefresh.addTarget(self, action: #selector(makeRefresh(_:)), for: .valueChanged)
         tableView.addSubview(pullRefresh)
@@ -92,15 +101,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
         searchField.translatesAutoresizingMaskIntoConstraints = false
         searchField.topAnchor.constraint(equalTo: view.topAnchor, constant: -350).isActive = true
         searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant:30).isActive = true
-        searchField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -200).isActive = true
+        searchField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 150).isActive = true
         searchField.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 60).isActive = true
         
         btnSearch.translatesAutoresizingMaskIntoConstraints = false
         btnSearch.topAnchor.constraint(equalTo: view.topAnchor, constant: 90).isActive = true
-        btnSearch.leftAnchor.constraint(equalTo: view.rightAnchor, constant: -155).isActive = true
+        btnSearch.leftAnchor.constraint(equalTo: searchField.leftAnchor, constant: 55).isActive = true
         btnSearch.widthAnchor.constraint(equalToConstant: 100).isActive = true
         btnSearch.heightAnchor.constraint(equalToConstant: 30).isActive = true
         btnSearch.addTarget(self, action: #selector(btnOpenPopup(sender:)), for: .allEvents)
+        tableStackView.addArrangedSubview(tableView)
         stackView.addArrangedSubview(searchField)
         stackView.addArrangedSubview(btnSearch)
         stackView.addArrangedSubview(mainTitle)
@@ -108,6 +118,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
         stackView.alignment = .center
         stackView.distribution = .fillEqually
         stackView.spacing = 10
+        tableStackView.axis = .vertical
+        tableStackView.alignment = .center
+        tableStackView.distribution = .fillEqually
+        tableStackView.spacing = 10
     }
     @objc func btnOpenPopup(sender:UIButton){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
