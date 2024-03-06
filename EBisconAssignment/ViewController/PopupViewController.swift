@@ -111,7 +111,11 @@ class PopupViewController: UIViewController,UITableViewDelegate {
         btnReset.heightAnchor.constraint(equalToConstant: 65).isActive = true
         btnDone.translatesAutoresizingMaskIntoConstraints = false
         btnDone.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
-        btnDone.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIScreen.main.bounds.width - 100).isActive = true
+        if UIDevice.current.userInterfaceIdiom == .pad{
+            btnDone.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIScreen.main.bounds.width - 200).isActive = true
+        }else{
+            btnDone.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIScreen.main.bounds.width - 120).isActive = true
+        }
         btnDone.widthAnchor.constraint(equalToConstant: 90).isActive = true
         btnDone.heightAnchor.constraint(equalToConstant: 65).isActive = true
         btnReset.addTarget(self, action: #selector(btnReset(sender:)), for: .touchUpInside)

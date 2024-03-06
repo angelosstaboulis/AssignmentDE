@@ -74,13 +74,17 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
         self.view.addSubview(tableStackView)
         searchField.delegate = self
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: -350).isActive = true
-        
+        stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: -220).isActive = true
+        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: (UIScreen.main.bounds.width / 2.0)-115).isActive = true
         stackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 400).isActive = true
         stackView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 80).isActive = true
         tableStackView.translatesAutoresizingMaskIntoConstraints = false
-        tableStackView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 630).isActive = true
-        
+        if UIDevice.current.userInterfaceIdiom == .pad{
+            tableStackView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 650).isActive = true
+        }else{
+            tableStackView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 450).isActive = true
+
+        }
         tableStackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 300).isActive = true
         tableStackView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 300).isActive = true
         tableView.isUserInteractionEnabled = true
@@ -95,7 +99,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
         mainTitle.translatesAutoresizingMaskIntoConstraints = false
         mainTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: -270).isActive = true
         
-        mainTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant:370).isActive = true
+        mainTitle.centerXAnchor.constraint(equalTo: stackView.centerXAnchor, constant:300).isActive = true
         mainTitle.widthAnchor.constraint(equalTo: view.widthAnchor, constant:600).isActive = true
         mainTitle.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 40).isActive = true
         searchField.translatesAutoresizingMaskIntoConstraints = false
