@@ -33,6 +33,15 @@ class ProductModel:Decodable{
       case image = "image"
       case rating = "rating"
     }
+    init(id: Int, title: String, price: Double, description: String, category: String, image: String, rating: RatingObject) {
+        self.id = id
+        self.title = title
+        self.price = price
+        self.description = description
+        self.category = category
+        self.image = image
+        self.rating = rating
+    }
 }
 
 @Model

@@ -70,11 +70,10 @@ class ProductCell:UITableViewCell{
         ratingView.heightAnchor.constraint(equalToConstant: 95).isActive = true
         ratingView.sendSubviewToBack(contentView)
         mainImage.translatesAutoresizingMaskIntoConstraints = false
-        mainImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 80).isActive = true
         mainImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 130).isActive = true
-
-        mainImage.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        mainImage.heightAnchor.constraint(equalToConstant: 145).isActive = true
+        mainImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -130).isActive = true
+        mainImage.widthAnchor.constraint(equalToConstant: 145).isActive = true
+        mainImage.heightAnchor.constraint(equalToConstant: 150).isActive = true
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.numberOfLines = 0
