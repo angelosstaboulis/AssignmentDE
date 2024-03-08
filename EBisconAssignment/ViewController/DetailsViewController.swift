@@ -18,7 +18,7 @@ class DetailsViewController: UIViewController,UITableViewDelegate,UITableViewDat
     var offLineProduct:DataProduct!
     var tableView:UITableView!
     let helper = Helper()
-    func setupCollectionViewConstraints(){
+    func setupTableViewConstraints(){
         tableView = UITableView(frame:CGRect(x: -200, y: 0, width: UIScreen.main.bounds.width+190, height: UIScreen.main.bounds.height))
         tableView.register(ProductCell.self,forCellReuseIdentifier: "cell")
         tableView.delegate = self
@@ -26,6 +26,7 @@ class DetailsViewController: UIViewController,UITableViewDelegate,UITableViewDat
         tableView.isUserInteractionEnabled = true
         tableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(tableView)
+        self.navigationItem.title = "Details Screen"
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,8 +35,7 @@ class DetailsViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setupCollectionViewConstraints()
-        self.navigationItem.title = "Details Screen"
+        setupTableViewConstraints()
 
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,6 +46,10 @@ class DetailsViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ProductCell
+        setupCell(cell: cell)
+        return cell
+    }
+    func setupCell(cell:ProductCell){
         DispatchQueue.main.async{
             if self.helper.isOnline{
                 cell.mainImage.sd_setImage(with:URL(string:self.selectedProduct.image))
@@ -63,10 +67,8 @@ class DetailsViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 cell.priceLabel.text =  String(describing:self.offLineProduct.price)
             }
         }
-       
-        return cell
+
     }
-    
 
     /*
     // MARK: - Navigation
