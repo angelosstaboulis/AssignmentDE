@@ -12,13 +12,7 @@ import EasyPeasy
 import RxRelay
 import SDWebImage
 import RxCocoa
-class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 600.0
-    }
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 600.0
-    }
+class ViewController: UIViewController{
     var viewModel = ProductsViewModel()
     private let disposeBag = DisposeBag()
     fileprivate var tableView:UITableView = {
@@ -27,110 +21,85 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
         tableView.estimatedRowHeight = 400
         return tableView
     }()
-    fileprivate var stackView:UIStackView = {
-        let view = UIStackView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     fileprivate var tableStackView:UIStackView = {
         let view = UIStackView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    fileprivate var mainTitle:UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 30)
-        label.text = "Discover New Places"
-        return label
-    }()
-    fileprivate var searchField:UITextField = {
-        let textField = UITextField()
-        
-        textField.textColor = UIColor.black
-        textField.font = UIFont.systemFont(ofSize: 12)
-        textField.placeholder = "Search Text"
-        return textField
-    }()
-    fileprivate var btnSearch:UIButton = {
-        let button = UIButton(frame: .zero)
-        button.backgroundColor = .white
-        button.setImage(UIImage(named:"filter"), for: .normal)
-        return button
-    }()
     let pullRefresh = UIRefreshControl()
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        return false
-    }
     let helper = Helper()
     var productsSwift:[DataProduct] = []
-
-    func setupCollectionViewConstraints(){
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 200.0
+    }
+    func createHeaderView()->UIView{
+        let sectionHeaderLabel = UILabel(frame:.zero)
+       sectionHeaderLabel.text = "Discover New Places"
+       sectionHeaderLabel.textColor = .brown
+       sectionHeaderLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
+       let  searchField = UITextField(frame:.zero)
+       searchField.textColor = UIColor.black
+       searchField.font = UIFont.systemFont(ofSize: 12)
+       searchField.placeholder = "Search Text"
+       let  btnFilter = UIButton(frame: .zero)
+       btnFilter.setImage(UIImage(named:"filter"), for: .normal)
+       btnFilter.addTarget(self, action: #selector(btnOpenPopup(sender:)), for: .allEvents)
+       searchField.placeholder = "Search Text"
+   
+       let sectionHeaderLabelView = UIStackView(arrangedSubviews: [searchField,sectionHeaderLabel,btnFilter])
+       sectionHeaderLabelView.frame = CGRect(x: 0, y: 0, width: 900, height: 400)
+       sectionHeaderLabelView.axis = .vertical
+       sectionHeaderLabelView.alignment = .leading
+       sectionHeaderLabelView.spacing = 5
+       sectionHeaderLabelView.distribution = .fillProportionally
+       sectionHeaderLabelView.sendSubviewToBack(tableView)
+       sectionHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
+       sectionHeaderLabel.topAnchor.constraint(equalTo: sectionHeaderLabelView.topAnchor, constant: 160).isActive = true
+       sectionHeaderLabel.leftAnchor.constraint(equalTo: sectionHeaderLabelView.leftAnchor, constant: (UIScreen.main.bounds.width / 2.0)+200).isActive = true
+       sectionHeaderLabel.widthAnchor.constraint(equalToConstant: 600).isActive = true
+       sectionHeaderLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+       btnFilter.translatesAutoresizingMaskIntoConstraints = false
+       btnFilter.topAnchor.constraint(equalTo: sectionHeaderLabelView.topAnchor, constant: 90).isActive = true
+       btnFilter.leftAnchor.constraint(equalTo: sectionHeaderLabelView.leftAnchor, constant: (UIScreen.main.bounds.width / 2.0)+300).isActive = true
+       btnFilter.widthAnchor.constraint(equalToConstant: 120).isActive = true
+       btnFilter.heightAnchor.constraint(equalToConstant: 45).isActive = true
+       searchField.translatesAutoresizingMaskIntoConstraints = false
+       searchField.topAnchor.constraint(equalTo: sectionHeaderLabelView.topAnchor, constant: 140).isActive = true
+       searchField.leftAnchor.constraint(equalTo: sectionHeaderLabelView.leftAnchor, constant: (UIScreen.main.bounds.width / 2.0)+190).isActive = true
+       searchField.widthAnchor.constraint(equalToConstant: 120).isActive = true
+       searchField.heightAnchor.constraint(equalToConstant: 45).isActive = true
+       return sectionHeaderLabelView
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return createHeaderView()
+    }
+    func setupTableViewConstraints(){
         self.view.addSubview(tableView)
-        self.view.addSubview(mainTitle)
-        self.view.addSubview(searchField)
-        self.view.addSubview(btnSearch)
-        self.view.addSubview(stackView)
         self.view.addSubview(tableStackView)
-        searchField.delegate = self
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: -220).isActive = true
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: (UIScreen.main.bounds.width / 2.0)-115).isActive = true
-        stackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 400).isActive = true
-        stackView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 80).isActive = true
+        self.navigationItem.title = "Assignment"
         tableStackView.translatesAutoresizingMaskIntoConstraints = false
-        if UIDevice.current.userInterfaceIdiom == .pad{
-            tableStackView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 650).isActive = true
-        }else{
-            tableStackView.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 450).isActive = true
-
-        }
+        tableStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: -150).isActive = true
         tableStackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 300).isActive = true
         tableStackView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 300).isActive = true
         tableView.isUserInteractionEnabled = true
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant:-150).isActive = true
-
         tableView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 300).isActive = true
         tableView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 300).isActive = true
         pullRefresh.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        pullRefresh.addTarget(self, action: #selector(makeRefresh(_:)), for: .valueChanged)
-        tableView.addSubview(pullRefresh)
-        mainTitle.translatesAutoresizingMaskIntoConstraints = false
-        mainTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: -270).isActive = true
-        
-        mainTitle.centerXAnchor.constraint(equalTo: stackView.centerXAnchor, constant:300).isActive = true
-        mainTitle.widthAnchor.constraint(equalTo: view.widthAnchor, constant:600).isActive = true
-        mainTitle.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 40).isActive = true
-        searchField.translatesAutoresizingMaskIntoConstraints = false
-        searchField.topAnchor.constraint(equalTo: view.topAnchor, constant: -350).isActive = true
-        searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant:30).isActive = true
-        searchField.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 150).isActive = true
-        searchField.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 60).isActive = true
-        
-        btnSearch.translatesAutoresizingMaskIntoConstraints = false
-        btnSearch.topAnchor.constraint(equalTo: view.topAnchor, constant: 90).isActive = true
-        btnSearch.leftAnchor.constraint(equalTo: searchField.leftAnchor, constant: 55).isActive = true
-        btnSearch.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        btnSearch.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        btnSearch.addTarget(self, action: #selector(btnOpenPopup(sender:)), for: .allEvents)
-        tableStackView.addArrangedSubview(tableView)
-        stackView.addArrangedSubview(searchField)
-        stackView.addArrangedSubview(btnSearch)
-        stackView.addArrangedSubview(mainTitle)
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
         tableStackView.axis = .vertical
         tableStackView.alignment = .center
         tableStackView.distribution = .fillEqually
         tableStackView.spacing = 10
+        tableStackView.addArrangedSubview(tableView)
+        
+        
+        
+        
     }
     @objc func btnOpenPopup(sender:UIButton){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "PopupViewController") as! PopupViewController
-        
         controller.providesPresentationContextTransitionStyle = true
         controller.definesPresentationContext = true
         controller.modalPresentationStyle = .pageSheet
@@ -142,22 +111,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
         pullRefresh.endRefreshing()
         
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func createMainList(){
         tableView.register(ProductCell.self,forCellReuseIdentifier: "cell")
-        setupCollectionViewConstraints()
-
+        setupTableViewConstraints()
         tableView.becomeFirstResponder()
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
-
         offLineUse()
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        createMainList()
         
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-    }
+    
     func offLineUse(){
         DispatchQueue.main.async{
             if self.helper.isOnline {
@@ -175,7 +141,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
                         cell.priceLabel.text = String(describing:product.price)
                         
                     }.disposed(by: self.disposeBag)
-       
+                
                 self.tableView.rx.modelSelected(ProductModel.self)
                     .observe(on: MainScheduler.instance)
                     .subscribe { item in
@@ -209,9 +175,21 @@ class ViewController: UIViewController,UITableViewDelegate,UITextFieldDelegate{
                     }.disposed(by: self.disposeBag)
             }
         }
-            
+        
     }
-
-
+    
+    
 }
-
+extension ViewController:UITextFieldDelegate{
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return false
+    }
+}
+extension ViewController:UITableViewDelegate{
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 600.0
+    }
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 600.0
+    }
+}
