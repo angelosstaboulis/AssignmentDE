@@ -26,48 +26,58 @@ class ViewController: UIViewController{
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    let sectionHeaderLabel = UILabel(frame:.zero)
+    let searchField = UITextField(frame:.zero)
+    let btnFilter = UIButton(frame: .zero)
+    let sectionHeaderLabelView = UIStackView(arrangedSubviews: [])
     let pullRefresh = UIRefreshControl()
     let helper = Helper()
     var productsSwift:[DataProduct] = []
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 200.0
     }
+    func createHeaderComponents(){
+        sectionHeaderLabel.text = "Discover New Places"
+        sectionHeaderLabel.textColor = .brown
+        sectionHeaderLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
+        searchField.textColor = UIColor.black
+        searchField.font = UIFont.systemFont(ofSize: 12)
+        searchField.placeholder = "Search Text"
+        btnFilter.setImage(UIImage(named:"filter"), for: .normal)
+        btnFilter.addTarget(self, action: #selector(btnOpenPopup(sender:)), for: .allEvents)
+        sectionHeaderLabelView.addArrangedSubview(searchField)
+        sectionHeaderLabelView.addArrangedSubview(sectionHeaderLabel)
+        sectionHeaderLabelView.addArrangedSubview(btnFilter)
+        sectionHeaderLabelView.frame = CGRect(x: 0, y: 0, width: 900, height: 400)
+        sectionHeaderLabelView.axis = .vertical
+        sectionHeaderLabelView.alignment = .leading
+        sectionHeaderLabelView.spacing = 5
+        sectionHeaderLabelView.distribution = .fillProportionally
+        sectionHeaderLabelView.sendSubviewToBack(tableView)
+    }
+    func createHeaderConstraints(){
+        sectionHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
+        sectionHeaderLabel.topAnchor.constraint(equalTo: sectionHeaderLabelView.topAnchor, constant: 160).isActive = true
+        sectionHeaderLabel.leftAnchor.constraint(equalTo: sectionHeaderLabelView.leftAnchor, constant: (UIScreen.main.bounds.width / 2.0)+200).isActive = true
+        sectionHeaderLabel.widthAnchor.constraint(equalToConstant: 600).isActive = true
+        sectionHeaderLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        btnFilter.translatesAutoresizingMaskIntoConstraints = false
+        btnFilter.topAnchor.constraint(equalTo: sectionHeaderLabelView.topAnchor, constant: 90).isActive = true
+        btnFilter.leftAnchor.constraint(equalTo: sectionHeaderLabelView.leftAnchor, constant: (UIScreen.main.bounds.width / 2.0)+300).isActive = true
+        btnFilter.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        btnFilter.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.topAnchor.constraint(equalTo: sectionHeaderLabelView.topAnchor, constant: 140).isActive = true
+        searchField.leftAnchor.constraint(equalTo: sectionHeaderLabelView.leftAnchor, constant: (UIScreen.main.bounds.width / 2.0)+190).isActive = true
+        searchField.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        searchField.heightAnchor.constraint(equalToConstant: 45).isActive = true
+    }
     func createHeaderView()->UIView{
-        let sectionHeaderLabel = UILabel(frame:.zero)
-       sectionHeaderLabel.text = "Discover New Places"
-       sectionHeaderLabel.textColor = .brown
-       sectionHeaderLabel.font = UIFont.boldSystemFont(ofSize: 18.0)
-       let  searchField = UITextField(frame:.zero)
-       searchField.textColor = UIColor.black
-       searchField.font = UIFont.systemFont(ofSize: 12)
-       searchField.placeholder = "Search Text"
-       let  btnFilter = UIButton(frame: .zero)
-       btnFilter.setImage(UIImage(named:"filter"), for: .normal)
-       btnFilter.addTarget(self, action: #selector(btnOpenPopup(sender:)), for: .allEvents)
-       searchField.placeholder = "Search Text"
-   
-       let sectionHeaderLabelView = UIStackView(arrangedSubviews: [searchField,sectionHeaderLabel,btnFilter])
-       sectionHeaderLabelView.frame = CGRect(x: 0, y: 0, width: 900, height: 400)
-       sectionHeaderLabelView.axis = .vertical
-       sectionHeaderLabelView.alignment = .leading
-       sectionHeaderLabelView.spacing = 5
-       sectionHeaderLabelView.distribution = .fillProportionally
-       sectionHeaderLabelView.sendSubviewToBack(tableView)
-       sectionHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
-       sectionHeaderLabel.topAnchor.constraint(equalTo: sectionHeaderLabelView.topAnchor, constant: 160).isActive = true
-       sectionHeaderLabel.leftAnchor.constraint(equalTo: sectionHeaderLabelView.leftAnchor, constant: (UIScreen.main.bounds.width / 2.0)+200).isActive = true
-       sectionHeaderLabel.widthAnchor.constraint(equalToConstant: 600).isActive = true
-       sectionHeaderLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-       btnFilter.translatesAutoresizingMaskIntoConstraints = false
-       btnFilter.topAnchor.constraint(equalTo: sectionHeaderLabelView.topAnchor, constant: 90).isActive = true
-       btnFilter.leftAnchor.constraint(equalTo: sectionHeaderLabelView.leftAnchor, constant: (UIScreen.main.bounds.width / 2.0)+300).isActive = true
-       btnFilter.widthAnchor.constraint(equalToConstant: 120).isActive = true
-       btnFilter.heightAnchor.constraint(equalToConstant: 45).isActive = true
-       searchField.translatesAutoresizingMaskIntoConstraints = false
-       searchField.topAnchor.constraint(equalTo: sectionHeaderLabelView.topAnchor, constant: 140).isActive = true
-       searchField.leftAnchor.constraint(equalTo: sectionHeaderLabelView.leftAnchor, constant: (UIScreen.main.bounds.width / 2.0)+190).isActive = true
-       searchField.widthAnchor.constraint(equalToConstant: 120).isActive = true
-       searchField.heightAnchor.constraint(equalToConstant: 45).isActive = true
+
+       createHeaderComponents()
+        
+       createHeaderConstraints()
+    
        return sectionHeaderLabelView
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
