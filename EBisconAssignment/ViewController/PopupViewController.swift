@@ -1,10 +1,3 @@
-//
-//  PopupViewController.swift
-//  EBisconAssignment
-//
-//  Created by Angelos Staboulis on 2/3/24.
-//
-
 import UIKit
 import RxSwift
 class PopupViewController: UIViewController,UITableViewDelegate {
