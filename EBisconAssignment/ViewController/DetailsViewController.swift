@@ -1,10 +1,3 @@
-//
-//  DetailsViewController.swift
-//  EBisconAssignment
-//
-//  Created by Angelos Staboulis on 29/2/24.
-//
-
 import UIKit
 import Alamofire
 import RxSwift

@@ -1,10 +1,3 @@
-//
-//  PopupViewController.swift
-//  EBisconAssignment
-//
-//  Created by Angelos Staboulis on 2/3/24.
-//
-
 import UIKit
 import RxSwift
 class PopupViewController: UIViewController,UITableViewDelegate {
@@ -36,7 +29,22 @@ class PopupViewController: UIViewController,UITableViewDelegate {
         label.textColor = .black
         return label
     }()
-   
+    func createButtonsConstraints(arrayItem:Int,buttons:[UIButton]){
+        buttons[arrayItem].translatesAutoresizingMaskIntoConstraints = false
+        if arrayItem < 3 {
+            buttons[arrayItem].topAnchor.constraint(equalTo: view.topAnchor, constant: CGFloat(top)).isActive = true
+            buttons[arrayItem].leftAnchor.constraint(equalTo: view.leftAnchor, constant: CGFloat(arrayItem*120)).isActive = true
+            buttons[arrayItem].widthAnchor.constraint(equalToConstant: 120).isActive = true
+        }else if arrayItem>=3 && arrayItem<6{
+            buttons[arrayItem].topAnchor.constraint(equalTo: view.topAnchor, constant: CGFloat(top+70)).isActive = true
+            buttons[arrayItem].leftAnchor.constraint(equalTo: view.leftAnchor, constant: CGFloat(arrayItem*120)-360).isActive = true
+            buttons[arrayItem].widthAnchor.constraint(equalToConstant: 120).isActive = true
+        }else if arrayItem==6{
+            buttons[arrayItem].topAnchor.constraint(equalTo: view.topAnchor, constant: CGFloat(top+140)).isActive = true
+            buttons[arrayItem].leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CGFloat(arrayItem*120)-715).isActive = true
+            buttons[arrayItem].widthAnchor.constraint(equalToConstant: 120).isActive = true
+        }
+    }
     func createButtons(){
         for item in 0..<menusText.count{
             buttons[item].setTitle(menusText[item], for: .normal)
@@ -45,23 +53,7 @@ class PopupViewController: UIViewController,UITableViewDelegate {
             buttons[item].layer.cornerRadius = 22
             buttons[item].layer.borderColor = UIColor.black.cgColor
             view.addSubview(buttons[item])
-            buttons[item].translatesAutoresizingMaskIntoConstraints = false
-            if item < 3 {
-                buttons[item].topAnchor.constraint(equalTo: view.topAnchor, constant: CGFloat(top)).isActive = true
-                buttons[item].leftAnchor.constraint(equalTo: view.leftAnchor, constant: CGFloat(item*120)).isActive = true
-                buttons[item].widthAnchor.constraint(equalToConstant: 120).isActive = true
-            }else if item>=3 && item<6{
-                buttons[item].topAnchor.constraint(equalTo: view.topAnchor, constant: CGFloat(top+70)).isActive = true
-                buttons[item].leftAnchor.constraint(equalTo: view.leftAnchor, constant: CGFloat(item*120)-360).isActive = true
-                buttons[item].widthAnchor.constraint(equalToConstant: 120).isActive = true
-            }else if item==6{
-                buttons[item].topAnchor.constraint(equalTo: view.topAnchor, constant: CGFloat(top+140)).isActive = true
-                buttons[item].leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: CGFloat(item*120)-715).isActive = true
-                buttons[item].widthAnchor.constraint(equalToConstant: 120).isActive = true
-            }
-            
-               
-            
+            createButtonsConstraints(arrayItem: item, buttons: buttons)
         }
     }
     func createTopMenu(){
